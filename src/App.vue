@@ -8,7 +8,6 @@ import FooterItem from './components/FooterItem.vue';
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/todo-list">Todo list</RouterLink>
@@ -21,7 +20,7 @@ import FooterItem from './components/FooterItem.vue';
   <RouterView />
 
   <footer>
-      <FooterItem />
+    <FooterItem />
   </footer>
 </template>
 
@@ -31,7 +30,7 @@ import FooterItem from './components/FooterItem.vue';
   margin: 0 auto 2rem;
 }
 
-h1{
+h1 {
   text-align: center;
   margin-top: 2rem;
   font-size: 3.5rem;
@@ -54,7 +53,7 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  /* padding: 0 1rem; */
+  line-height: 2.5rem;
   padding: 1rem 1.5rem;
   border-left: 1px solid var(--color-border);
 }

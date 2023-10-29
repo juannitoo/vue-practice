@@ -1,7 +1,6 @@
 <template>
   <h1>JsonPlaceHolder</h1>
   <p>A faire</p>
-
 </template>
 
 <style>
