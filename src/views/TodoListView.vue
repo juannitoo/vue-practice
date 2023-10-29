@@ -43,7 +43,7 @@ const editThing = function (thing) {
   </div>
 </template>
 
-<style scoped>
+<style>
 h3 {
   margin: 4rem 0 2rem 0;
   text-align: center;

@@ -72,5 +72,8 @@ button {
 }
 .error-message{
   background-color:rgb(255,100,100);
+  &:hover {
+    background-color: rgb(255,100,100);
+  }
 }
 </style>
