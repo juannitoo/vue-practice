@@ -4,8 +4,11 @@ import { ref } from 'vue';
 let thingsToDo = ref("");
 const emit = defineEmits(['add']);
 
+
 const addThings = function (){
-  console.log("todoform add", thingsToDo)
+  if(thingsToDo.value.length === 0){
+    return
+  }
   emit("add", thingsToDo.value)
   thingsToDo.value = ""
 };
@@ -16,7 +19,6 @@ const addThings = function (){
   <form @submit.prevent="addThings">
     <label for="things">Choses à faire :</label>
     <input type="text" name="things" id="things" v-model="thingsToDo" placeholder="Saisissez ici"/>
-    <br>
     <button type="submit">Ajouter</button>
   </form>
 </template>
@@ -40,9 +42,15 @@ const addThings = function (){
     font-weight: bold;
     border-radius: 4px;
     transition-duration: 0.4s;
+    margin-top: 1rem;
     &:hover{
       background-color: rgb(0, 128, 85);
       transition-duration: 0.4s;
     }
-  } 
+  }
+  .error-message{
+    display: block;
+    text-align : center;
+    margin: -0.5rem 0 0.5rem 0;
+  }
 </style>

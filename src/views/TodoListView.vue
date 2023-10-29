@@ -5,18 +5,29 @@ import TodoList from '../components/todo-list/TodoList.vue';
 
 let thingsToDo = ref([]);
 
+if (window.localStorage.getItem('TodoList-vuejs-practice')){
+  thingsToDo.value = JSON.parse(window.localStorage.getItem('TodoList-vuejs-practice'))
+}
+
 const saveThings = function(data){
-  console.log("todolistview add", thingsToDo.value)
-  thingsToDo.value.push({thing: data, id: Date.now()})
+  if (data.length > 1){
+    thingsToDo.value.push({thing: data, id: Date.now()})
+  }
+  window.localStorage.setItem('TodoList-vuejs-practice', JSON.stringify(thingsToDo.value))
 };
 
 const deleteThing = function(thing){
   thingsToDo.value = thingsToDo.value.filter(t => t.id !== thing.id )
+  window.localStorage.setItem('TodoList-vuejs-practice', JSON.stringify(thingsToDo.value))
+  if (thingsToDo.value.length === 0 && window.localStorage.getItem('TodoList-vuejs-practice')){
+    window.localStorage.clear()
+  }
 };
 
 const editThing = function(thing){
   let thingIndex = thingsToDo.value.indexOf(thing)
   thingsToDo.value.splice(thingIndex, 1, thing)
+  window.localStorage.setItem('TodoList-vuejs-practice', JSON.stringify(thingsToDo.value))
 };
 
 </script>

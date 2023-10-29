@@ -42,8 +42,11 @@ const saveThing = function(thing){
         </div>
         <div v-if="edition.edit === true && edition.id === `edit`+t.id">
           <input id="edit-Input" type="text" v-model="t.thing" @keypress.enter="saveThing(t)"/>
-          <span class="edit" @click="saveThing(t)">Sauvegarder</span>
+          <span class="edit" v-if="t.thing.length > 0" @click="saveThing(t)">Sauvegarder</span>
+          <span class="edit" v-else> Minimum 1 caractère</span>
+
         </div>
+        
       </div>
     </li>
   </ul>
