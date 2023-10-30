@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
+import LoadingIcon from '../components/LoadingIcon.vue'
 
 const posts = ref()
 const loading = ref(Boolean)
@@ -17,7 +18,7 @@ onMounted( async () => {
         .then((response) => response.json())
         .then((json) => { posts.value = json })
         .then(() => loading.value = false);
-  }, 1000)
+  }, 1500)
   // await fetch('https://jsonplaceholder.typicode.com/posts')
   //       .then((response) => response.json())
   //       .then((json) => { posts.value = json })
@@ -42,7 +43,7 @@ function toggleModal() {
 <template>
   <h1>JsonPlaceHolder</h1>
   <p >En cours</p>
-  <section><p id="loading" v-if="loading">Chargement en cours...</p></section>
+  <section><div id="loading" v-if="loading"><LoadingIcon /></div></section>
 
   <section>
 
@@ -98,9 +99,8 @@ p{
   margin-bottom: 1rem;
 }
 #loading{
-  display: block;
-  width: 100%;
-  text-align: center;
+  scale: 2;
+  margin: 6rem auto;
 }
 .selectionner{
   padding: 0.20rem 1rem 0.20rem 1rem;
