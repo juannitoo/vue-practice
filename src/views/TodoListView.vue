@@ -55,6 +55,6 @@ h1 {
 .section {
   box-shadow: 0px 0px 7px 4px rgb(0, 189, 126);
   padding: 1rem 0 3rem 0;
-  transition: max-height 0.4s;
+  animation: append-animate 0.3s linear;
 }
 </style>

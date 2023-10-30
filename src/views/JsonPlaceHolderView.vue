@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import LoadingIcon from '../components/LoadingIcon.vue'
+import JsonplaceholderForm from '../components/jsonplaceholder/JsonplaceholderForm.vue'
 
 const posts = ref()
 const loading = ref(Boolean)
@@ -10,7 +11,6 @@ const nombrePosts = computed(() => {
   return selectedPost.value.length
 })
 
-
 onMounted( async () => {
   loading.value = true;
   setTimeout(()=>{
@@ -18,7 +18,8 @@ onMounted( async () => {
         .then((response) => response.json())
         .then((json) => { posts.value = json })
         .then(() => loading.value = false);
-  }, 1500)
+  }, 1000) // Oh le beau loading !
+
   // await fetch('https://jsonplaceholder.typicode.com/posts')
   //       .then((response) => response.json())
   //       .then((json) => { posts.value = json })
@@ -38,14 +39,30 @@ function toggleSelection(article, button){
 function toggleModal() {
   modal.value = !modal.value
 }
+
+function addPost(data){
+  if (data.title.length > 1 && data.title.length > 1) {
+    posts.value.splice(
+      0,
+      0, 
+      {title: data.title, 
+      id: Date.now(), 
+      body: data.body},
+    );
+  }
+}
 </script>
 
 <template>
   <h1>JsonPlaceHolder</h1>
-  <p >En cours</p>
-  <section><div id="loading" v-if="loading"><LoadingIcon /></div></section>
-
-  <section>
+  <section v-if="loading">
+    <div id="loading"><LoadingIcon /></div>
+  </section>
+  <section v-else>
+    
+    <div id="form">
+      <JsonplaceholderForm  @add="addPost"/>
+    </div>
 
     <article v-for="post in posts" :key="post.id">
       <h5>{{ post.title }}</h5>
@@ -81,12 +98,20 @@ section{
   flex-wrap: wrap; 
   justify-content: space-between;
 }
+#form{
+  width: 100%;
+  padding-bottom : 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgb(0, 189, 126);;
+}
 article{
   margin-top: 2rem;
   width: 30%;
   padding: 1em;
   box-shadow: 0px 0px 7px 4px rgb(0, 189, 126);
   position : relative; 
+  animation: append-animate 0.3s linear;
+  overflow: hidden;
 }
 h5{
   font-style: italic;
@@ -111,6 +136,7 @@ p{
   text-align: center;
   color: black;
   cursor: pointer;
+  transition-duration: 0.4s;
   &:hover{
     background-color: rgb(0, 142, 95);
   }
@@ -124,6 +150,7 @@ p{
   text-align: center;
   color: black;
   cursor: pointer;
+  transition-duration: 0.4s;
   &:hover{
     background-color: rgb(210, 186, 6);
   }

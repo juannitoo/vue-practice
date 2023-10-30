@@ -25,6 +25,16 @@ import FooterItem from './components/FooterItem.vue';
 </template>
 
 <style>
+@keyframes append-animate {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .logo {
   display: block;
   margin: 0 auto 2rem;

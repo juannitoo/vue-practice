@@ -39,6 +39,7 @@ section {
   flex: 0 0 100%;
   justify-content: space-between;
   flex-direction: row wrap;
+  animation: append-animate 0.3s linear;
 }
 article {
   width: 48%;

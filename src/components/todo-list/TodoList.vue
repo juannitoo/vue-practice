@@ -50,16 +50,6 @@ const saveThing = function (thing) {
 </template>
 
 <style scoped>
-@keyframes append-animate {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 ul {
   list-style: none;
   margin: 0;

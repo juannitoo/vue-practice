@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/jsonplaceholder',
       name: 'JsonPlaceHolder',
-      component: () => import('../views/JsonPlaceHolder.vue')
+      component: () => import('../views/JsonPlaceHolderView.vue')
     },
     {
       path: '/todo-list',
