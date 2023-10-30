@@ -1,27 +1,36 @@
 <script setup>
-import { onMounted, onBeforeMount, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
 const posts = ref()
-const loading = ref(true)
+const loading = ref(Boolean)
 const modal = ref(false)
 const selectedPost = ref([])
-
-onBeforeMount( () => {
-  loading.value = true;
+const nombrePosts = computed(() => {
+  return selectedPost.value.length
 })
+
+
 onMounted( async () => {
-  await fetch('https://jsonplaceholder.typicode.com/posts')
+  loading.value = true;
+  setTimeout(()=>{
+    fetch('https://jsonplaceholder.typicode.com/posts')
         .then((response) => response.json())
         .then((json) => { posts.value = json })
         .then(() => loading.value = false);
+  }, 1000)
+  // await fetch('https://jsonplaceholder.typicode.com/posts')
+  //       .then((response) => response.json())
+  //       .then((json) => { posts.value = json })
+  //       .then(() => loading.value = false);
 })
 
-function toggleSelection(article){
-  const post = {id: article.id, title: article.title}
-  if (selectedPost.value.filter((p)=> p.id === post.id).length === 0){
-    selectedPost.value.push(post)
-  } else {
-    selectedPost.value.splice(selectedPost.value.indexOf(post), 1)
+function toggleSelection(article, button){
+  if (selectedPost.value.includes(article, button)){
+      selectedPost.value.splice(selectedPost.value.indexOf(article), 1)
+      button.textContent = 'Sélectionner'
+  }else{
+      selectedPost.value.push(article)
+      button.textContent = 'Déselectionner'
   }
 }
 
@@ -32,18 +41,23 @@ function toggleModal() {
 
 <template>
   <h1>JsonPlaceHolder</h1>
-  <p>En cours</p>
-  <section><p v-if="loading">Chargement en cours...</p></section>
+  <p >En cours</p>
+  <section><p id="loading" v-if="loading">Chargement en cours...</p></section>
 
   <section>
 
     <article v-for="post in posts" :key="post.id">
       <h5>{{ post.title }}</h5>
       <p>{{ post.body }}</p>
-      <button class="selectionner" @click="toggleSelection(post)">Sélectionner</button>
+      <button v-if="selectedPost.filter((p)=> p.id === post.id).length === 0"
+        class="selectionner" @click="toggleSelection(post, $event.target)">Sélectionner</button>
+      <button v-else class="deselectionner" @click="toggleSelection(post, $event.target)">Désélectionner</button>
     </article>
 
-    <button class="modale-btn" @click="toggleModal">Afficher mes articles sélectionnés</button>
+    <button class="modale-btn" @click="toggleModal" v-if="!modal">
+      {{ nombrePosts }} article{{ nombrePosts > 1 ? 's' : '' }} sélectionné{{ nombrePosts > 1 ? 's' : '' }}
+    </button>
+    <button class="modale-btn" @click="toggleModal" v-else>Fermer la fenêtre</button>    
     <div class="modale" v-if="modal">
       <h3>Articles sélectionnés</h3>
       <a v-for="post in selectedPost" 
@@ -83,6 +97,11 @@ p{
   text-align: justify;
   margin-bottom: 1rem;
 }
+#loading{
+  display: block;
+  width: 100%;
+  text-align: center;
+}
 .selectionner{
   padding: 0.20rem 1rem 0.20rem 1rem;
   background-color: rgb(0, 189, 126);
@@ -91,8 +110,22 @@ p{
   right: 5px;
   text-align: center;
   color: black;
+  cursor: pointer;
   &:hover{
     background-color: rgb(0, 142, 95);
+  }
+}
+.deselectionner{
+  padding: 0.20rem 1rem 0.20rem 1rem;
+  background-color: rgb(253, 253, 104);
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  &:hover{
+    background-color: rgb(210, 186, 6);
   }
 }
 .modale-btn{
@@ -104,22 +137,28 @@ p{
  font-size: 1.5rem;
  cursor: pointer;
  color: white;
+ z-index: 2;
  &:hover{
   background-color: rgb(50, 50, 50);
  }
 }
 .modale{
   position: fixed;
-  top: 25vh;
-  left: 25vw;
-  width: 50vw;
+  bottom: 0rem;;
   height: 50vh;
+  right: 0vw;
+  width: 50%;
+  max-width: 600px;
   background-color: rgb(100, 100, 100);
   padding: 1rem;
+  z-index: 1;
+  overflow: auto;
 }
 .modale h3{
   text-align: center;
   font-size : 1.5rem;
+  margin-top: -1rem;
+
 }
 .modale a{
   color: white;
