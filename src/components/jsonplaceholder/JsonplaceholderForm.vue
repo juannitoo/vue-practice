@@ -12,7 +12,7 @@ const validTitle = function (value) {
   if (value.length < 2 || value.valueOf().length === 0) {
     error.value.isTitleError = true;
     if (!error.value.message.includes('Titre minimum 2 caractères')) {
-      error.value.message = [...error.value.message, 'Titre minimum 2 caractères'];
+      error.value.message = ['Titre minimum 2 caractères', ...error.value.message];
     }
   } else {
     error.value.isTitleError = false;
