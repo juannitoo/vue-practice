@@ -37,9 +37,7 @@ const addThings = function (fieldValue) {
       @keyup="validField(thingsToDo)"
     />
     <button v-if="!errorMessage" type="submit">Ajouter</button>
-    <button v-else disabled class="error-message">
-      Minimun 2 caractères
-    </button>
+    <button v-else disabled class="error-message">Minimun 2 caractères</button>
   </form>
 </template>
 
@@ -70,10 +68,10 @@ button {
     transition-duration: 0.4s;
   }
 }
-.error-message{
-  background-color:rgb(255,100,100);
+.error-message {
+  background-color: rgb(255, 100, 100);
   &:hover {
-    background-color: rgb(255,100,100);
+    background-color: rgb(255, 100, 100);
   }
 }
 </style>

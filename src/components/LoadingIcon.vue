@@ -1,5 +1,8 @@
 <template>
-  <div class="lds-ripple"><div></div><div></div></div>
+  <div class="lds-ripple">
+    <div></div>
+    <div></div>
+  </div>
 </template>
 
 <style>
@@ -50,5 +53,4 @@
     opacity: 0;
   }
 }
-
 </style>
