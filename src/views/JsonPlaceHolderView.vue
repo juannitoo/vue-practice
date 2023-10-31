@@ -196,7 +196,12 @@ p {
   color: white;
   display: block;
 }
-/* @media (min-width: 1024px) {
-
-} */
+@media (min-width: 850px) {
+  #form {
+    width: 100%;
+    padding-bottom: 2rem;
+    margin: 0 1rem 1rem 1rem;
+    border-bottom: 2px solid rgb(0, 189, 126);  
+  }
+}
 </style>

@@ -121,4 +121,15 @@ button {
     background-color: rgb(255, 100, 100);
   }
 }
+@media (max-width: 850px) {
+  input,
+  button,
+  label,
+  textarea {
+    display: block;
+    font-size: 1.4rem;
+    margin: 0 auto;
+    width: 350px;
+  }
+}
 </style>
