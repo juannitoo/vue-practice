@@ -98,4 +98,14 @@ li {
   padding: 0.4rem;
   margin-top: -0.2rem;
 }
+
+@media (max-width: 850px) {
+  #delete {
+  width: 20%;
+  }
+  #thing {
+    width: 79%;
+
+  }
+}
 </style>

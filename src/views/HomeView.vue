@@ -29,6 +29,7 @@
         Composition API<br />
         Todo list avec LocalStorage<br />
         JsonPlaceHolder avec formulaire et sélection simple<br />
+        JsonPlaceHolder avec store réactif PINIA<br />
         Css responsive basique mais fonctionnel<br />
       </p>
     </article>
