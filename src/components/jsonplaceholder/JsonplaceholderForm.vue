@@ -47,7 +47,6 @@ const addArticle = function (titleValue, contentValue) {
   }
   if (!error.value.isTitleError && !error.value.isContentError) {
     post.value = { title: titleValue, body: contentValue };
-    console.log('VALID OK', post.value);
     emit('add', post.value);
     titleValue = '';
     contentValue = '';

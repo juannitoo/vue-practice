@@ -1,15 +1,17 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import LoadingIcon from '../components/LoadingIcon.vue';
 import JsonplaceholderForm from '../components/jsonplaceholder/JsonplaceholderForm.vue';
 import ModalItem from '../components/jsonplaceholder/ModalItem.vue';
 
+import { useSelectedPostsStore } from '../stores/SelectedPostsStore.js'
+
+const selectedPostsStore = useSelectedPostsStore();
+const selectedPosts = selectedPostsStore.selectedPosts;
+
+
 const posts = ref();
 const loading = ref(Boolean);
-const selectedPost = ref([]);
-const nombrePosts = computed(() => {
-  return selectedPost.value.length;
-});
 
 onMounted(async () => {
   loading.value = true;
@@ -28,16 +30,7 @@ onMounted(async () => {
   //       .then(() => loading.value = false);
 });
 
-function toggleSelection(article, button) {
-  if (selectedPost.value.includes(article, button)) {
-    selectedPost.value.splice(selectedPost.value.indexOf(article), 1);
-    button.textContent = 'Sélectionner';
-  } else {
-    selectedPost.value.push(article);
-    button.textContent = 'Déselectionner';
-  }
-}
-
+// id : Date.now() pr la démo
 function addPost(data) {
   if (data.title.length > 1 && data.title.length > 1) {
     posts.value.splice(0, 0, { title: data.title, id: Date.now(), body: data.body });
@@ -59,20 +52,20 @@ function addPost(data) {
       <h5>{{ post.title }}</h5>
       <p>{{ post.body }}</p>
       <button
-        v-if="selectedPost.filter((p) => p.id === post.id).length === 0"
         class="selectionner"
-        @click="toggleSelection(post, $event.target)"
+        v-if="selectedPosts.filter((p) => p.id === post.id).length === 0"
+        @click="selectedPostsStore.toggleSelection(post, $event.target)"
       >
         Sélectionner
       </button>
-      <button v-else class="deselectionner" @click="toggleSelection(post, $event.target)">
+      <button class="deselectionner" v-else @click="selectedPostsStore.toggleSelection(post, $event.target)">
         Désélectionner
       </button>
     </article>
 
     <ModalItem 
-      :nombrePosts="nombrePosts" 
-      :selectedPost="selectedPost"
+      :nombrePosts="selectedPostsStore.nbrePosts" 
+      :selectedPosts="selectedPosts"
     />
 
   </section>

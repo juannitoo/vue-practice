@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const modal = ref(false);
-defineProps(['nombrePosts', 'selectedPost'])
+defineProps(['nombrePosts', 'selectedPosts'])
 
 function toggleModal() {
   modal.value = !modal.value;
@@ -10,24 +10,26 @@ function toggleModal() {
 </script>
 
 <template>
+  <div>
     <button class="modale-btn" @click="toggleModal" v-if="!modal">
       {{ nombrePosts }} article{{ nombrePosts > 1 ? 's' : '' }} sélectionné{{
         nombrePosts > 1 ? 's' : ''
-      }}
+      }} 
     </button>
     <button class="modale-btn" @click="toggleModal" v-else>Fermer la fenêtre</button>
     <div class="modale" v-if="modal">
       <h3>Articles sélectionnés</h3>
-      <a
-        v-for="post in selectedPost"
-        :key="post.id"
-        class="selected-articles"
-        :href="`https://jsonplaceholder.typicode.com/posts/${post.id}`"
-        target="_blank"
-      >
-        {{ post.title }}
-      </a>
+        <a
+          class="selected-articles"
+          v-for="post in selectedPosts"
+          :key="post.id"
+          :href="`https://jsonplaceholder.typicode.com/posts/${post.id}`"
+          target="_blank"
+        >
+          {{ post.title }}
+        </a>
     </div>
+  </div>
 </template>
 
  <style>

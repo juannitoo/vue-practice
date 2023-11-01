@@ -32,11 +32,27 @@ npm run build
 
 ```sh
 npm run lint
-ou npm run format 
+ou npm run format
 ```
 
 ### Github-pages
 
 ```
 https://medium.com/@Roli_Dori/deploy-vue-cli-3-project-to-github-pages-ebeda0705fbd
+```
+
+### Pense-bête
+
+```
+**PINIA** :
+Le store, c'est sur le parent et les enfants ne l'interrogent pas, on continue à passer les props.
+Les getters ne doivent pas avoir le même nom que la propriété et elle doit interroger le store directement !!!!!
+
+const selectedPostsStore = useSelectedPostsStore();
+const selectedPosts = selectedPostsStore.selectedPosts;
+*const nbrePost = selectedPostsStore.nbrePosts    => getter, ne fonctionne pas, pas de reactivité*
+  <ModalItem
+    :nombrePosts="selectedPostsStore.nbrePosts"    => fonctionne
+    :selectedPosts="selectedPosts"
+  />
 ```
