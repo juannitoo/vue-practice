@@ -24,9 +24,9 @@ export const useSelectedPostsStore = defineStore( "SelectedPostsStore", {
       }
     },
     async getPosts(){
-      await fetch('https://jsonplaceholder.typicode.com/posts')
+      this.posts = await (fetch('https://jsonplaceholder.typicode.com/posts')
         .then((response) => response.json())
-        .then((json) => { this.posts = json }
+        .then((json) => { this.posts = json })
       ).default;
     }
 

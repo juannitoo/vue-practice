@@ -11,6 +11,9 @@ const selectedPosts = selectedPostsStore.selectedPosts;
 const posts = ref([])
 const loading = ref(false);
 
+// initialisation du store
+selectedPostsStore.getPosts()
+
 // je fais ca pour qu on voit le loading
 const getData = new Promise((resolve) => {
   setTimeout(() => {
@@ -18,9 +21,9 @@ const getData = new Promise((resolve) => {
   }, 1000);
 });
 
-onMounted( async () => {
+onMounted( () => {
   loading.value = true;
-  getData.then(() => loading.value = false );
+  getData.then(() => { loading.value = false });
 });
 
 // id : Date.now() pr la démo
