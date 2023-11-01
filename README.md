@@ -43,16 +43,19 @@ https://medium.com/@Roli_Dori/deploy-vue-cli-3-project-to-github-pages-ebeda0705
 
 ### Pense-bête
 
-```
 **PINIA** :
 Le store, c'est sur le parent et les enfants ne l'interrogent pas, on continue à passer les props.
-Les getters ne doivent pas avoir le même nom que la propriété et elle doit interroger le store directement !!!!!
+Les getters ne doivent pas avoir le même nom que la propriété et elle doit interroger le store directement.
 
+```
 const selectedPostsStore = useSelectedPostsStore();
 const selectedPosts = selectedPostsStore.selectedPosts;
-*const nbrePost = selectedPostsStore.nbrePosts    => getter, ne fonctionne pas, pas de reactivité*
-  <ModalItem
-    :nombrePosts="selectedPostsStore.nbrePosts"    => fonctionne
-    :selectedPosts="selectedPosts"
-  />
+
+const nbrePosts = selectedPostsStore.nbrePosts   => getter, ne fonctionne pas, pas de reactivité
+
+<ModalItem
+  // :nombrePosts="nbrePosts"
+  :nombrePosts="selectedPostsStore.nbrePosts"   => fonctionne
+  :selectedPosts="selectedPosts"
+/>
 ```

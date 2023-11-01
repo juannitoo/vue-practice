@@ -56,7 +56,7 @@ const addArticle = function (titleValue, contentValue) {
 
 <template>
   <form @submit.prevent="addArticle(titleValue, contentValue)">
-    <label for="titre">Titre :</label>
+    <label for="titre">Titre de l'article:</label>
     <input
       type="text"
       name="titre"

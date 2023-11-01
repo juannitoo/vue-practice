@@ -3,8 +3,9 @@ import { defineStore } from "pinia"
 export const useSelectedPostsStore = defineStore( "SelectedPostsStore", {
 
   state: () => {
+    let posts = []
     let selectedPosts = []
-    return { selectedPosts }
+    return { selectedPosts, posts }
   },
   getters: {
     nbrePosts() {
@@ -17,11 +18,17 @@ export const useSelectedPostsStore = defineStore( "SelectedPostsStore", {
         this.selectedPosts.splice(
           this.selectedPosts.indexOf(article), 
           1
-          );
-        } else {
-          this.selectedPosts.push(article);
-        }
+        );
+      } else {
+        this.selectedPosts.push(article);
+      }
     },
-  }
+    async getPosts(){
+      await fetch('https://jsonplaceholder.typicode.com/posts')
+        .then((response) => response.json())
+        .then((json) => { this.posts = json }
+      ).default;
+    }
 
+  }
 })
