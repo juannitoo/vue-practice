@@ -1,5 +1,5 @@
 <script setup>
-defineProps(['posts', 'selectedPosts','selectedPostsStore' ])
+defineProps(['posts', 'selectedPosts','postsStore' ])
 </script>
 
 <template>
@@ -10,11 +10,11 @@ defineProps(['posts', 'selectedPosts','selectedPostsStore' ])
       <button
         class="selectionner"
         v-if="selectedPosts.filter((p) => p.id === post.id).length === 0"
-        @click="selectedPostsStore.toggleSelection(post, $event.target)"
+        @click="postsStore.toggleSelection(post, $event.target)"
       >
         Sélectionner
       </button>
-      <button class="deselectionner" v-else @click="selectedPostsStore.toggleSelection(post, $event.target)">
+      <button class="deselectionner" v-else @click="postsStore.toggleSelection(post, $event.target)">
         Désélectionner
       </button>
     </article>

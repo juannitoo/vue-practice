@@ -4,20 +4,20 @@ import LoadingIcon from '../components/LoadingIcon.vue';
 import JsonplaceholderForm from '../components/jsonplaceholder/JsonplaceholderForm.vue';
 import ModalItem from '../components/jsonplaceholder/ModalItem.vue';
 import PostsList from '../components/jsonplaceholder/PostsList.vue';
-import { useSelectedPostsStore } from '../stores/SelectedPostsStore.js';
+import { usePostsStore } from '../stores/PostsStore.js';
 
-const selectedPostsStore = useSelectedPostsStore();
-const selectedPosts = selectedPostsStore.selectedPosts;
+const PostsStore = usePostsStore();
+const selectedPosts = PostsStore.selectedPosts;
 const posts = ref([])
 const loading = ref(false);
 
 // initialisation du store
-selectedPostsStore.getPosts()
+PostsStore.getPosts()
 
 // je fais ca pour le loading
 const getData = new Promise((resolve) => {
   setTimeout(() => {
-    resolve(posts.value = selectedPostsStore.posts);
+    resolve(posts.value = PostsStore.posts);
   }, 1000);
 });
 
@@ -58,11 +58,11 @@ function addPost(data) {
     <PostsList 
       :posts="posts"
       :selectedPosts="selectedPosts"
-      :selectedPostsStore="selectedPostsStore"
+      :postsStore="PostsStore"
     />
 
     <ModalItem 
-      :nombrePosts="selectedPostsStore.nbrePosts" 
+      :nombrePosts="PostsStore.nbrePosts" 
       :selectedPosts="selectedPosts"
     />
 

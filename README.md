@@ -48,14 +48,14 @@ Le store, c'est sur le parent et les enfants ne l'interrogent pas, on continue �
 Les getters ne doivent pas avoir le même nom que la propriété et elle doit interroger le store directement.
 
 ```
-const selectedPostsStore = useSelectedPostsStore();
-const selectedPosts = selectedPostsStore.selectedPosts;
+const PostsStore = PostsStore();
+const selectedPosts = PostsStore.selectedPosts;
 
-const nbrePosts = selectedPostsStore.nbrePosts   => getter, ne fonctionne pas, pas de reactivité
+const nbrePosts = PostsStore.nbrePosts   => getter, ne fonctionne pas, pas de reactivité
 
 <ModalItem
   // :nombrePosts="nbrePosts"
-  :nombrePosts="selectedPostsStore.nbrePosts"   => fonctionne
+  :nombrePosts="PostsStore.nbrePosts"   => fonctionne
   :selectedPosts="selectedPosts"
 />
 ```
