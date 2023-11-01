@@ -14,7 +14,7 @@ const loading = ref(false);
 // initialisation du store
 selectedPostsStore.getPosts()
 
-// je fais ca pour qu on voit le loading
+// je fais ca pour le loading
 const getData = new Promise((resolve) => {
   setTimeout(() => {
     resolve(posts.value = selectedPostsStore.posts);
@@ -26,10 +26,18 @@ onMounted( () => {
   getData.then(() => { loading.value = false });
 });
 
-// id : Date.now() pr la démo
+function newId(posts){
+  let idTab = []
+  for (const post of posts.value){
+    idTab.push(Number(post.id))
+  } 
+  let idMax = Math.max(...idTab)
+  return idMax+1
+}
+
 function addPost(data) {
   if (data.title.length > 1 && data.title.length > 1) {
-    posts.value.splice(0, 0, { title: data.title, id: Date.now(), body: data.body });
+    posts.value.splice(0, 0, { title: data.title, id: newId(posts), body: data.body });
   }
 }
 </script>
