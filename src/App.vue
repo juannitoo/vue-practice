@@ -72,8 +72,8 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (max-width: 850px) { 
-  h1{
+@media (max-width: 850px) {
+  h1 {
     font-size: 2rem;
   }
 
@@ -102,6 +102,6 @@ nav a:first-of-type {
   }
   nav a:first-of-type {
     border-left: 1px solid var(--color-border);
-}
+  }
 }
 </style>

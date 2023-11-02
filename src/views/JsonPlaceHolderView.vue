@@ -8,31 +8,33 @@ import { usePostsStore } from '../stores/PostsStore.js';
 
 const PostsStore = usePostsStore();
 const selectedPosts = PostsStore.selectedPosts;
-const posts = ref([])
+const posts = ref([]);
 const loading = ref(false);
 
 // initialisation du store
-PostsStore.getPosts()
+PostsStore.getPosts();
 
 // je fais ca pour le loading
 const getData = new Promise((resolve) => {
   setTimeout(() => {
-    resolve(posts.value = PostsStore.posts);
+    resolve((posts.value = PostsStore.posts));
   }, 1000);
 });
 
-onMounted( () => {
+onMounted(() => {
   loading.value = true;
-  getData.then(() => { loading.value = false });
+  getData.then(() => {
+    loading.value = false;
+  });
 });
 
-function newId(posts){
-  let idTab = []
-  for (const post of posts.value){
-    idTab.push(Number(post.id))
-  } 
-  let idMax = Math.max(...idTab)
-  return idMax+1
+function newId(posts) {
+  let idTab = [];
+  for (const post of posts.value) {
+    idTab.push(Number(post.id));
+  }
+  let idMax = Math.max(...idTab);
+  return idMax + 1;
 }
 
 function addPost(data) {
@@ -50,22 +52,13 @@ function addPost(data) {
   </section>
 
   <section v-else>
-
     <div id="form">
       <JsonplaceholderForm @add="addPost" />
     </div>
-    
-    <PostsList 
-      :posts="posts"
-      :selectedPosts="selectedPosts"
-      :postsStore="PostsStore"
-    />
 
-    <ModalItem 
-      :nombrePosts="PostsStore.nbrePosts" 
-      :selectedPosts="selectedPosts"
-    />
+    <PostsList :posts="posts" :selectedPosts="selectedPosts" :postsStore="PostsStore" />
 
+    <ModalItem :nombrePosts="PostsStore.nbrePosts" :selectedPosts="selectedPosts" />
   </section>
 </template>
 
@@ -94,7 +87,7 @@ section {
     width: 100%;
     padding-bottom: 2rem;
     margin: 0 1rem 1rem 1rem;
-    border-bottom: 2px solid rgb(0, 189, 126);  
+    border-bottom: 2px solid rgb(0, 189, 126);
   }
 }
 </style>

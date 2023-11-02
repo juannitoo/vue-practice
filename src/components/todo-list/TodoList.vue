@@ -101,11 +101,10 @@ li {
 
 @media (max-width: 850px) {
   #delete {
-  width: 20%;
+    width: 20%;
   }
   #thing {
     width: 79%;
-
   }
 }
 </style>
