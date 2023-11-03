@@ -1,28 +1,46 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const email = ref("")
 const password = ref("")
 const password2 = ref("")
+const mailError = ref(false)
+const passwordError = ref(false)
+const passwordError2 = ref(false)
 const errors = ref({error: false, message: [""] })
 const isConnectionTabActive = ref(true)
 const isSubscribtionTabActive = ref(false)
 
-const validField = function (value) {
-  if (value.length < 2) {
-    errors.value.error = true;
-    errors.value.message= "moins de 2 caractères"
-    return false;
+watch( email , (newValue) => {
+  // https://www.iana.org/domains/root/db   .abarth  .alstom  .amazon
+  let pattern = /[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\.[a-z]{2,}/
+  if (pattern.test(newValue)) {
+    mailError.value = false;
   } else {
-    errors.value.error = false;
-    errors.value.message= ""
-    return true;
+    mailError.value = true;
   }
-};
+})
+
+watch( password , (newValue) => {
+  if (newValue.length < 2) {
+    passwordError.value = true;
+  } else {
+    passwordError.value = false;
+  }
+})
+
+watch( [password, password2] , (newPassword) => {
+  // console.log(newPassword1[0], newPassword2) // !!!
+  if (newPassword[0] === newPassword[1]) {
+    passwordError2.value = false;
+  } else {
+    passwordError2.value = true;
+  }
+})
 
 function chooseForm(event) {
   if (event !== undefined){
-    if ( event.id === "connection"){
+    if (event.id === "connection"){
       isConnectionTabActive.value = true;
       isSubscribtionTabActive.value = false;
     } else {
@@ -37,6 +55,7 @@ function chooseForm(event) {
 
 <template>
 
+  <h1>En cours</h1>
   <form @submit.prevent="connection(email)">
 
     <div class="tabs">
@@ -55,40 +74,45 @@ function chooseForm(event) {
       </p>
     </div>
 
-    <label for="email">Email :</label>
-    <input
-      type="email"
-      name="email"
-      id="email"
-      v-model="email"
-      placeholder="Saisissez votre mail"
-      @keyup="validField(email)"
-    />
+    <div>
+      <label for="email">Email :</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        v-model="email"
+        placeholder="Saisissez votre mail"
+      />
+      <p class="error-message" v-if="mailError">Le mail est mal formé, ex: xx@xx.xx</p>
+    </div>
 
-    <label for="password">Mot de passe :</label>
-    <input
-      type="password"
-      name="password"
-      id="password"
-      v-model="password"
-      placeholder="Saisissez votre mot de passe"
-      @keyup="validField(password)"
-    />
+    <div>
+      <label for="password">Mot de passe :</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        v-model="password"
+        placeholder="Saisissez votre mot de passe"
+      />
+      <p class="error-message" v-if="passwordError">Minimum 2 caractères</p>
+    </div>
 
     <div v-if="isSubscribtionTabActive">
-      <label for="password">Confirmer le mot de passe :</label>
+      <label for="password2">Confirmer le mot de passe :</label>
       <input
-        type="password2"
+        type="password"
         name="password2"
         id="password2"
         v-model="password2"
-        placeholder="Confirmer votre mot de passe"
-        @keyup="validField(password2)"
+        placeholder="Confirmer votre mot de passe"  
       />
+      <p class="error-message" v-if="passwordError2">Les mots de passe ne sont pas identiques</p>
     </div>
 
     <button v-if="isConnectionTabActive" type="submit">Se connecter</button>
     <button v-else>S'inscrire</button>
+    <p class="error-message" v-if="errors.error">Nous n'avons pas pu vous identifier, email ou mot de passe erronés</p>
   </form>
 </template>
 
@@ -127,7 +151,8 @@ form{
 }
 input,
 button,
-label {
+label,
+.error-message {
   display: block;
   font-size: 1.8rem;
   margin: 0 auto;
@@ -158,10 +183,7 @@ button {
   }
 }
 .error-message {
-  background-color: rgb(255, 100, 100);
-  &:hover {
-    background-color: rgb(255, 100, 100);
-  }
+  color: rgb(255, 100, 100);
 }
 
 @media (max-width: 1100px) {
