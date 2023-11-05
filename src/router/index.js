@@ -10,14 +10,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/connexion',
-      name: 'connection',
       // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
+      // this generates a separate chunk (jsonplaceholder.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ConnectionView.vue')
-    },
-    {
       path: '/jsonplaceholder',
       name: 'JsonPlaceHolder',
       component: () => import('../views/JsonPlaceHolderView.vue')
@@ -26,7 +21,23 @@ const router = createRouter({
       path: '/todo-list',
       name: 'todo-list',
       component: () => import('../views/TodoListView.vue')
-    }
+    },
+    {
+      path: '/connexion',
+      name: 'connection',
+      component: () => import('../views/ConnectionView.vue')
+    },
+    {
+      path: '/user/:id(\\d+)',
+      name: 'user',
+      props: true,
+      component: () => import('../views/UserPage.vue')
+    },  
+    {
+      path: '/:pathMatch(.*)*',
+      name : 'not-found',
+      redirect : "/"
+    },
   ]
 });
 

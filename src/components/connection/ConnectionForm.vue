@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
+import router from '../../router/index.js'
 
 const email = ref("")
 const password = ref("")
@@ -11,6 +12,7 @@ const errors = ref({error: false, message: [""] })
 const isConnectionTabActive = ref(true)
 const isSubscribtionTabActive = ref(false)
 const disabledValidationButton = ref(true)
+
 
 // on stop un obs que qd on le crée de manière asynchrone
 watch( email , (newValue) => {
@@ -116,6 +118,7 @@ function connectionFormValidation(email,password,password2){
       }).then((response) => response.json())
         .then((json) => {
           console.log(json)
+          router.push({ name: 'user', params: { id: json.userId } })
         });    
     }
 
