@@ -32,12 +32,12 @@ const router = createRouter({
       name: 'user',
       props: true,
       component: () => import('../views/UserPage.vue')
-    },  
+    },
     {
       path: '/:pathMatch(.*)*',
-      name : 'not-found',
-      redirect : "/"
-    },
+      name: 'not-found',
+      redirect: '/'
+    }
   ]
 });
 

@@ -1,5 +1,4 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
   <h1>Bienvenue sur Vue Practice</h1>
@@ -10,12 +9,12 @@
         occasion d'évaluer mon niveau. L'essentiel pour moi est de pouvoir intervenir sur un projet
         sans perdre trop de temps sur la compréhension de ce framework et de pouvoir m'adapter
         rapidement. Je dois donc en comprendre les rouages principaux. Le reste viendra avec
-        l'expérience.<br>
-        Je réutilise le back-end de mon repo angular-practice, pour l'instant en local, en
-        modifiant quelques lignes pour les différents tests et pour à terme les faire cohabiter.
-        en hébergeant ce repo vue-practice sur Github et qu'AWS me laisse l'interroger.
-        Je suis encore dans le free tiers d'AWS et j'ai bien envie que ca dure mais 
-        je ne suis pas sûr que ca puisse fonctionner. On verra !
+        l'expérience.<br />
+        Je réutilise le back-end de mon repo angular-practice, pour l'instant en local, en modifiant
+        quelques lignes pour les différents tests et pour à terme les faire cohabiter. en hébergeant
+        ce repo vue-practice sur Github et qu'AWS me laisse l'interroger. Je suis encore dans le
+        free tiers d'AWS et j'ai bien envie que ca dure mais je ne suis pas sûr que ca puisse
+        fonctionner. On verra !
       </p>
     </article>
     <article>
