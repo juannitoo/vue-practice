@@ -107,32 +107,11 @@ async function connectionFormValidation(email,password,password2){
   if ( isConnectionTabActive.value ) {
 
     if (validEmail(email) && validPassword(password)) {
-      console.log("GO CONNEXION")
-      // fetch('http://localhost:3001/api/users/login', { 
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json;charset=utf-8',
-      //     "Accept" : "*/*"
-      //   },
-      //   body: JSON.stringify({
-      //     email: email, 
-      //     password: password
-      //   })
-      // }).then((response) => response.json())
-      //   .then((json) => {
-      //     console.log(json)
-      //     router.push({ name: 'user', params: { id: json.userId } })
-      //   });    
-
-      
-      
-      UserStore.getUser(email, password)
+      console.log("GO CONNEXION")    
+      UserStore.login(email, password)
       .then( () => {
-        console.log('user connection form', UserStore.user)
         router.push({ name: 'user', params: { id: UserStore.user.userId } })
       })
-
-
     }
 
   } else {
@@ -157,7 +136,7 @@ async function connectionFormValidation(email,password,password2){
           console.log(json)
         }); 
     }
-
+    
   }
 }
 </script>

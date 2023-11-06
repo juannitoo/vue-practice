@@ -1,6 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import FooterItem from './components/FooterItem.vue';
+import { useUserStore } from './stores/UserStore.js';
+
+const UserStore = useUserStore();
 </script>
 
 <template>
@@ -12,7 +15,8 @@ import FooterItem from './components/FooterItem.vue';
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/todo-list">Todo list</RouterLink>
         <RouterLink to="/jsonplaceholder">JsonPlaceHolder</RouterLink>
-        <RouterLink to="/connexion">Connexion</RouterLink>
+        <RouterLink v-if="!UserStore.authenticated" to="/connexion">Connexion</RouterLink>
+        <RouterLink v-else to="/" @click="UserStore.logout()" class="deconnexion">Déconnexion</RouterLink>
       </nav>
     </div>
   </header>
@@ -70,6 +74,11 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+.deconnexion{
+  color: var(--color-text);
+  cursor: pointer;
 }
 
 @media (max-width: 850px) {
