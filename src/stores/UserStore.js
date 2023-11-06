@@ -37,7 +37,6 @@ export const useUserStore = defineStore('UserStore', {
       }
     },
     async signup(email, password) {
-      // if !isEmailUsed
       await fetch('http://localhost:3001/api/users/signup', { 
         method: 'POST',
         headers: {
@@ -78,11 +77,7 @@ export const useUserStore = defineStore('UserStore', {
     async getUsers() {
       this.users = await fetch(`http://localhost:3001/api/users`)
         .then((response) => response.json()).default;
-    },
-    async isEmailUsed(){
-      await fetch(`http://localhost:3001/api/users/isemailused`)
-      .then((response) => response.json())
-    },
+    }, 
     saveUserToLocalStorage(user){
       if(this.user.userId !== "" && this.user.token !== "" ){
         window.localStorage.setItem("vue-practice-user", JSON.stringify(user))

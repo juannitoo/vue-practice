@@ -5,8 +5,8 @@ import { useUserStore } from '../../stores/UserStore.js';
 
 const UserStore = useUserStore();
 
-const email = ref("test3@test.fr")
-const password = ref("aaaa")
+const email = ref("")
+const password = ref("")
 const password2 = ref("")
 const isMailError = ref(false)
 const isPasswordError = ref(false)
@@ -15,6 +15,7 @@ const errors = ref({error: false, message: [""] })
 const isConnectionTabActive = ref(true)
 const isSubscribtionTabActive = ref(false)
 const disabledValidationButton = ref(true)
+const isMailUsed = ref(false)
 
 
 // on stop un obs que qd on le crée de manière asynchrone
@@ -31,14 +32,19 @@ watch( [password, password2] , (passwords) => {
 })
 
 watch( [email, password] , () => {
-  activeValidationButton();
+  activeValidationButton(email);
 })
 
 watch( [email, password, password2] , () => {
-  activeValidationButton();
+  activeValidationButton(email);
 })
 
-function activeValidationButton(){
+async function activeValidationButton(email){
+  // pour la cohérence du bouton je dois appeler cette promesse ici
+  // pour que isMailUsed.value ait la bonne valeur
+  // sinon le train n'est pas encore passé ...
+  await isEmailUsed(email.value)
+
   if ( isConnectionTabActive.value === true
       && (!isMailError.value && email.value.length > 1)
       && (!isPasswordError.value && password.value.length > 1)
@@ -46,6 +52,7 @@ function activeValidationButton(){
     disabledValidationButton.value = false
   } else if ( 
       isSubscribtionTabActive.value === true
+      && !isMailUsed.value
       && (!isMailError.value && email.value.length > 1)
       && (!isPasswordError.value && password.value.length > 1)
       && (!isPasswordError2.value && password2.value.length > 1)
@@ -56,7 +63,7 @@ function activeValidationButton(){
   }
 }
 
-function chooseForm(eventTarget) { 
+function onChooseForm(eventTarget) { 
   if (eventTarget !== undefined){
     if (eventTarget.id === "connection"){
       isConnectionTabActive.value = true;
@@ -66,10 +73,13 @@ function chooseForm(eventTarget) {
       isConnectionTabActive.value = false;
     }
   }
-  activeValidationButton()
+  activeValidationButton(email)
+  if (isSubscribtionTabActive.value) isEmailUsed(email.value)
 }
 
-function validEmail(email){
+async function validEmail(email){
+  if (isSubscribtionTabActive.value) await isEmailUsed(email)
+  console.log(isMailUsed.value)
   // https://www.iana.org/domains/root/db   .abarth  .alstom  .amazon
   let pattern = /[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\.[a-z]{2,}/
   if (pattern.test(email)) {
@@ -80,6 +90,24 @@ function validEmail(email){
     return false;
   }
 }
+
+async function isEmailUsed(email){
+  return await fetch(`http://localhost:3001/api/users/isemailused`, { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      "Accept" : "*/*"
+    },
+    body: JSON.stringify({
+      email: email, 
+    })
+  })
+  .then((response) => response.json())
+  .then((json) => {
+    isMailUsed.value = json.resp;
+  })
+}
+
 
 function validPassword(password){
   // let pattern = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-\s]).{8,}$/
@@ -129,8 +157,8 @@ async function connectionFormValidation(email,password,password2){
 
 <template>
   <h3> 
-    En cours en local, pour l'instant le form fonctionne, 
-    manque la redirection qq part, et la gestion du token
+    En cours en local, pour l'instant le form fonctionne, les validations aussi, 
+    il manque principalement la gestion du token
   </h3>
   <div>
     <form @submit.prevent="connectionFormValidation(email,password,password2)">
@@ -139,14 +167,14 @@ async function connectionFormValidation(email,password,password2){
       <p class="tab" 
         id="connection"
         :class="[ isConnectionTabActive ? 'active' : 'unactive' ]"
-        @click="chooseForm($event.target)">
+        @click="onChooseForm($event.target)">
         Connexion
       </p>
       <span class="border-tab"></span>
       <p class="tab"
         id="subscribe"
         :class="[ isSubscribtionTabActive ? 'active' : 'unactive' ]"
-        @click="chooseForm($event.target)">
+        @click="onChooseForm($event.target)">
         Inscription
       </p>
     </div>
@@ -161,6 +189,7 @@ async function connectionFormValidation(email,password,password2){
         placeholder="Saisissez votre mail"
       />
       <p class="error-message" v-if="isMailError">Le mail est mal formé, ex: xx@xx.xx</p>
+      <p class="error-message" v-if="isMailUsed && isSubscribtionTabActive">Le mail est déjà utilisé</p>
     </div>
 
     <div>

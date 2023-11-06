@@ -31,6 +31,7 @@
       <p>
         Single File Components<br />
         Composition API<br />
+        Routage - Lazy loading<br />
         Todo list avec LocalStorage<br />
         JsonPlaceHolder avec formulaire et sélection simple<br />
         JsonPlaceHolder avec store réactif PINIA<br />
