@@ -36,12 +36,52 @@ export const useUserStore = defineStore('UserStore', {
         window.localStorage.removeItem("vue-practice-user");
       }
     },
-    async signup() {
-
+    async signup(email, password) {
+      // if !isEmailUsed
+      await fetch('http://localhost:3001/api/users/signup', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          "Accept" : "*/*"
+        },
+        body: JSON.stringify({
+          email: email, 
+          password: password
+        })
+      }).then((response) => response.json())
+        .then( (user) => this.user = user)
+        .then( () => console.log(this.user))
+        .then( () => {
+          this.saveUserToLocalStorage(this.user);
+          this.authenticated = true;
+        } )
+        .then( () => {return this.user} )
+    },
+    async deleteAccount(userId){
+      await fetch(`http://localhost:3001/api/users/${this.user.userId}`, { 
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          "Accept" : "*/*"
+        },
+        body: JSON.stringify({
+          id: userId, 
+        })
+      }).then((response) => response.json())
+        .then( (json) => console.log(json.message))
+        .then( () => this.logout() )
+    },
+    async getUser(){
+      await fetch(`http://localhost:3001/api/users/${this.user.userId}`)
+        .then((response) => response.json())
     },
     async getUsers() {
       this.users = await fetch(`http://localhost:3001/api/users`)
         .then((response) => response.json()).default;
+    },
+    async isEmailUsed(){
+      await fetch(`http://localhost:3001/api/users/isemailused`)
+      .then((response) => response.json())
     },
     saveUserToLocalStorage(user){
       if(this.user.userId !== "" && this.user.token !== "" ){

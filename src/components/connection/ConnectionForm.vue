@@ -5,7 +5,7 @@ import { useUserStore } from '../../stores/UserStore.js';
 
 const UserStore = useUserStore();
 
-const email = ref("test2@test.fr")
+const email = ref("test3@test.fr")
 const password = ref("aaaa")
 const password2 = ref("")
 const isMailError = ref(false)
@@ -105,7 +105,6 @@ function arePasswordsEqual(passwords) {
 
 async function connectionFormValidation(email,password,password2){
   if ( isConnectionTabActive.value ) {
-
     if (validEmail(email) && validPassword(password)) {
       console.log("GO CONNEXION")    
       UserStore.login(email, password)
@@ -113,30 +112,17 @@ async function connectionFormValidation(email,password,password2){
         router.push({ name: 'user', params: { id: UserStore.user.userId } })
       })
     }
-
   } else {
-
     if (validEmail(email) 
         && validPassword(password) 
         && arePasswordsEqual([password, password2])
         ) {
       console.log("GO INSCRPTION")
-      fetch('http://localhost:3001/api/users/signup', { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          "Accept" : "*/*"
-        },
-        body: JSON.stringify({
-          email: email, 
-          password: password
-        })
-      }).then((response) => response.json())
-        .then((json) => {
-          console.log(json)
-        }); 
+      UserStore.signup(email, password)
+      .then( () => {
+        router.push({ name: 'user', params: { id: UserStore.user.userId } })
+      })
     }
-    
   }
 }
 </script>
