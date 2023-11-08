@@ -15,7 +15,7 @@ const UserStore = useUserStore();
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/todo-list">Todo list</RouterLink>
         <RouterLink to="/jsonplaceholder">JsonPlaceHolder</RouterLink>
-        <RouterLink v-if="!UserStore.authenticated" to="/connexion">Connexion</RouterLink>
+        <RouterLink v-if="!UserStore.isAuthenticated" to="/connexion">Connexion</RouterLink>
         <RouterLink v-else to="/" @click="UserStore.logout()" class="deconnexion"
           >Déconnexion</RouterLink
         >

@@ -5,32 +5,21 @@ export const useUserStore = defineStore('UserStore', {
   state: () => {
     let user = {};
     let users = [];
-    let authenticated = false;
-    return { user, users, authenticated };
+    let isAuthenticated = false;
+    return { user, users, isAuthenticated };
   },
   getters: {
     consoleLog: (state) => console.log('youhou from UserStore', state.user)
   },
   actions: {
     async login(email, password) {
-      // this.user = await fetch('http://localhost:3001/api/users/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json;charset=utf-8',
-      //     Accept: '*/*'
-      //   },
-      //   body: JSON.stringify({
-      //     email: email,
-      //     password: password
-      //   })
-      // })
       this.user = await Axios.post('/api/users/login', {
         email: email,
         password: password
       }).then((response) => (this.user = response.data))
         .then(() => {
           this.saveTokenToLocalStorage(this.user.token);
-          this.authenticated = true;
+          this.isAuthenticated = true;
         })
         .then(() => {
           return this.user;
@@ -38,56 +27,39 @@ export const useUserStore = defineStore('UserStore', {
         .catch((err) => console.log("erreur axios login :", err));
     },
     logout() {
-      if (this.user.userId !== '' && this.authenticated === true) {
-        this.authenticated = false;
+      if (this.user.userId !== '' && this.isAuthenticated === true) {
+        this.isAuthenticated = false;
         window.localStorage.removeItem('vue-practice-user-token');
+        this.user = {}
       }
     },
     async signup(email, password) {
-      await fetch('http://localhost:3001/api/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          Accept: '*/*'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      })
-        .then((response) => response.json())
-        .then((user) => (this.user = user))
+      this.user = await Axios.post('/api/users/signup', {
+        email: email,
+        password: password
+      }).then((response) => this.user = response.data)
         .then(() => {
-          this.saveUserToLocalStorage(this.user);
-          this.authenticated = true;
+          this.saveTokenToLocalStorage(this.user);
+          this.isAuthenticated = true;
         })
         .then(() => {
           return this.user;
-        });
+        })
+        .catch((err) => console.log("erreur axios signup :", err));
     },
     async deleteAccount(userId) {
-      await fetch(`http://localhost:3001/api/users/${this.user.userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          Accept: '*/*'
-        },
-        body: JSON.stringify({
+      await Axios.delete(`api/users/${this.user.userId}`, {
           id: userId
-        })
-      })
-        .then((response) => response.json())
-        .then(() => this.logout());
+        }).then(() => this.logout())
+          .catch((err) => console.log("erreur axios signup :", err));
     },
     async getUser() {
-      await fetch(`http://localhost:3001/api/users/${this.user.userId}`).then((response) =>
-        response.json()
-      );
+      await Axios.get(`http://localhost:3001/api/users/${this.user.userId}`)
+      .then((response) => response.data ).default;
     },
     async getUsers() {
-      this.users = await fetch(`http://localhost:3001/api/users`).then((response) =>
-        response.json()
-      ).default;
+      this.users = await Axios.get(`http://localhost:3001/api/users`)
+      .then((response) => response.data ).default;
     },
     saveTokenToLocalStorage(token) {
       if (this.user.userId !== '' && this.user.token !== '') {

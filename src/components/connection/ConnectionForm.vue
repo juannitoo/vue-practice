@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import router from '../../router/index.js';
 import { useUserStore } from '../../stores/UserStore.js';
+import Axios from '../../axios/axios-base';
 
 const UserStore = useUserStore();
 
@@ -97,20 +98,10 @@ async function validEmail(email) {
 }
 
 async function isEmailUsed(email) {
-  return await fetch(`http://localhost:3001/api/users/isemailused`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Accept: '*/*'
-    },
-    body: JSON.stringify({
+  return await Axios.post(`/api/users/isemailused`, {
       email: email
-    })
-  })
-    .then((response) => response.json())
-    .then((json) => {
-      isMailUsed.value = json.resp;
-    });
+    }).then((response) => { isMailUsed.value = response.data.resp })
+      .catch((err) => console.log("erreur axios isEmailUsed:", err));
 }
 
 function validPassword(password) {

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import Axios from '../axios/axios-base';
 
 export const usePostsStore = defineStore('PostsStore', {
   state: () => {
@@ -20,11 +21,8 @@ export const usePostsStore = defineStore('PostsStore', {
       }
     },
     async getPosts() {
-      this.posts = await fetch('https://jsonplaceholder.typicode.com/posts')
-        .then((response) => response.json())
-        .then((json) => {
-          this.posts = json;
-        }).default;
+      this.posts = await Axios.get('https://jsonplaceholder.typicode.com/posts')
+        .then((response) => this.posts = response.data).default;
     }
   }
 });
