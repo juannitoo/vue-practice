@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import Axios from '../axios/axios-base';
 
 export const useUserStore = defineStore('UserStore', {
   state: () => {
@@ -12,31 +13,34 @@ export const useUserStore = defineStore('UserStore', {
   },
   actions: {
     async login(email, password) {
-      this.user = await fetch('http://localhost:3001/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          Accept: '*/*'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      })
-        .then((response) => response.json())
-        .then((user) => (this.user = user))
+      // this.user = await fetch('http://localhost:3001/api/users/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json;charset=utf-8',
+      //     Accept: '*/*'
+      //   },
+      //   body: JSON.stringify({
+      //     email: email,
+      //     password: password
+      //   })
+      // })
+      this.user = await Axios.post('/api/users/login', {
+        email: email,
+        password: password
+      }).then((response) => (this.user = response.data))
         .then(() => {
-          this.saveUserToLocalStorage(this.user);
+          this.saveTokenToLocalStorage(this.user.token);
           this.authenticated = true;
         })
         .then(() => {
           return this.user;
-        });
+        })
+        .catch((err) => console.log("erreur axios login :", err));
     },
     logout() {
       if (this.user.userId !== '' && this.authenticated === true) {
         this.authenticated = false;
-        window.localStorage.removeItem('vue-practice-user');
+        window.localStorage.removeItem('vue-practice-user-token');
       }
     },
     async signup(email, password) {
@@ -85,9 +89,9 @@ export const useUserStore = defineStore('UserStore', {
         response.json()
       ).default;
     },
-    saveUserToLocalStorage(user) {
+    saveTokenToLocalStorage(token) {
       if (this.user.userId !== '' && this.user.token !== '') {
-        window.localStorage.setItem('vue-practice-user', JSON.stringify(user));
+        window.localStorage.setItem('vue-practice-user-token', JSON.stringify(token));
       }
     }
   }

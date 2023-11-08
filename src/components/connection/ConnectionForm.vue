@@ -5,8 +5,8 @@ import { useUserStore } from '../../stores/UserStore.js';
 
 const UserStore = useUserStore();
 
-const email = ref('');
-const password = ref('');
+const email = ref('test2@test.fr');
+const password = ref('aaaa');
 const password2 = ref('');
 const isMailError = ref(false);
 const isPasswordError = ref(false);
