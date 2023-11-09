@@ -33,6 +33,15 @@ export const useUserStore = defineStore('UserStore', {
         this.user = {}
       }
     },
+    isLogged(){
+      let token = localStorage.getItem('vue-practice-user-token')
+      console.log('userStore isLogged', !!token)
+      return !!token
+    },
+    getToken(){
+      if (this.isLogged) 
+      return localStorage.getItem('vue-practice-user-token')
+    },
     async signup(email, password) {
       this.user = await Axios.post('/api/users/signup', {
         email: email,

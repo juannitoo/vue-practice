@@ -2,8 +2,8 @@ import './assets/main.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import App from './App.vue';
 import router from './router';
+import App from './App.vue';
 
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { faEye } from '@fortawesome/free-regular-svg-icons';
@@ -19,6 +19,7 @@ app.use(pinia);
 app.use(router);
 
 app.mount('#app');
+
 
 // npm install --save @fortawesome/fontawesome-svg-core
 // npm install --save @fortawesome/free-regular-svg-icons
