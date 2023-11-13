@@ -4,6 +4,7 @@ import FooterItem from './components/FooterItem.vue';
 import { useUserStore } from './stores/UserStore.js';
 
 const UserStore = useUserStore();
+
 </script>
 
 <template>
@@ -12,13 +13,17 @@ const UserStore = useUserStore();
 
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/todo-list">Todo list</RouterLink>
-        <RouterLink to="/jsonplaceholder">JsonPlaceHolder</RouterLink>
+        <RouterLink v-if="!UserStore.isAuthenticated" to="/">Home</RouterLink>
+        <RouterLink v-if="!UserStore.isAuthenticated" to="/todo-list">Todo list</RouterLink>
+        <RouterLink v-if="!UserStore.isAuthenticated" to="/jsonplaceholder">JsonPlaceHolder</RouterLink>
         <RouterLink v-if="!UserStore.isAuthenticated" to="/connexion">Connexion</RouterLink>
-        <RouterLink v-else to="/" @click="UserStore.logout()" class="deconnexion"
-          >Déconnexion</RouterLink
-        >
+        
+        <RouterLink v-if="UserStore.isAuthenticated" to="/admin">
+          Admin
+        </RouterLink>
+        <RouterLink v-if="UserStore.isAuthenticated" to="/" @click="UserStore.logout()">
+          Déconnexion
+        </RouterLink>
       </nav>
     </div>
   </header>
@@ -79,7 +84,6 @@ nav a:first-of-type {
 }
 
 .deconnexion {
-  color: var(--color-text);
   cursor: pointer;
 }
 

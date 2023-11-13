@@ -5,12 +5,14 @@ export const useUserStore = defineStore('UserStore', {
   state: () => {
     let user = {};
     let users = [];
-    let isAuthenticated = false;
+    let isAuthenticated = false; 
     return { user, users, isAuthenticated };
   },
+
   getters: {
-    consoleLog: (state) => console.log('youhou from UserStore', state.user)
+    consoleLog: (state) => console.log('UserStore', state.user),
   },
+
   actions: {
     async login(email, password) {
       this.user = await Axios.post('/api/users/login', {
@@ -20,6 +22,8 @@ export const useUserStore = defineStore('UserStore', {
         .then(() => {
           this.saveTokenToLocalStorage(this.user.token);
           this.isAuthenticated = true;
+          // console.log(this.user)
+          localStorage.setItem("vue-practice-user", JSON.stringify(this.user))
         })
         .then(() => {
           return this.user;
@@ -27,19 +31,12 @@ export const useUserStore = defineStore('UserStore', {
         .catch((err) => console.log("erreur axios login :", err));
     },
     logout() {
-      if (this.user.userId !== '' && this.isAuthenticated === true) {
-        this.isAuthenticated = false;
-        window.localStorage.removeItem('vue-practice-user-token');
-        this.user = {}
-      }
-    },
-    isLogged(){
-      let token = localStorage.getItem('vue-practice-user-token')
-      console.log('userStore isLogged', !!token)
-      return !!token
+      this.isAuthenticated = false;
+      window.localStorage.removeItem('vue-practice-user-token');
+      window.localStorage.removeItem('vue-practice-user');
+      this.user = {}
     },
     getToken(){
-      if (this.isLogged) 
       return localStorage.getItem('vue-practice-user-token')
     },
     async signup(email, password) {
@@ -66,9 +63,15 @@ export const useUserStore = defineStore('UserStore', {
       await Axios.get(`http://localhost:3001/api/users/${this.user.userId}`)
       .then((response) => response.data ).default;
     },
+    getUserFromLocalStorage(){
+      this.user = JSON.parse(localStorage.getItem('vue-practice-user'))
+      console.log("getUserFromLocalStorage", this.user)
+      this.isAuthenticated = true;
+      return this.user
+    },
     async getUsers() {
       this.users = await Axios.get(`http://localhost:3001/api/users`)
-      .then((response) => response.data ).default;
+      .then((response) => this.users = response.data ).default;
     },
     saveTokenToLocalStorage(token) {
       if (this.user.userId !== '' && this.user.token !== '') {

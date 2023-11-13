@@ -13,8 +13,8 @@
         Je réutilise le back-end de mon repo angular-practice, pour l'instant en local, en modifiant
         quelques lignes pour les différents tests et pour à terme les faire cohabiter. en hébergeant
         ce repo vue-practice sur Github et qu'AWS me laisse l'interroger. Je suis encore dans le
-        free tiers d'AWS et j'ai bien envie que ca dure mais je ne suis pas sûr que ca puisse
-        fonctionner. On verra !
+        free tiers d'AWS et j'ai bien envie que ca dure au moins jusqu'à 
+        ce que je doive payer l'IPv4 en février.
       </p>
     </article>
     <article>
@@ -37,6 +37,7 @@
         Css responsive basique mais fonctionnel<br />
         Connection - Déconnexion<br />
         Inscription - Suppression<br />
+        En cours, JWT, Guard<br />
       </p>
     </article>
   </section>

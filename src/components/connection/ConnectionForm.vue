@@ -129,13 +129,15 @@ async function connectionFormValidation(email, password, password2) {
   if (isConnectionTabActive.value) {
     if (validEmail(email) && validPassword(password)) {
       UserStore.login(email, password).then(() => {
-        router.push({ name: 'user', params: { id: UserStore.user.userId } });
+        // router.push({ name: 'user', params: { id: UserStore.user.userId } });
+        router.push({ name: 'admin' });
       });
     }
   } else {
     if (validEmail(email) && validPassword(password) && arePasswordsEqual([password, password2])) {
       UserStore.signup(email, password).then(() => {
-        router.push({ name: 'user', params: { id: UserStore.user.userId } });
+        // router.push({ name: 'user', params: { id: UserStore.user.userId } });
+        router.push({ name: 'admin' });
       });
     }
   }

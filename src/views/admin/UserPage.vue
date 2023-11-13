@@ -1,19 +1,33 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/UserStore.js';
+import { useUserStore } from '../../stores/UserStore.js';
 
 const UserStore = useUserStore();
 const router = useRouter();
 
+let userId = UserStore.user.userId
+// refresh
+if (userId === undefined ){
+  try {
+    UserStore.getUserFromLocalStorage()
+    userId = UserStore.user.userId
+  } catch  (error)  {
+    UserStore.logout(userId)
+  }
+}  
+
+const user = UserStore.user;
+const userEmail = user.email;
+
 function onDeleteAccount() {
-  UserStore.deleteAccount(UserStore.user.userId).then(() => router.push({ name: 'home' }));
+  UserStore.deleteAccount(userId).then(() => router.push({ name: 'home' }));
 }
 </script>
 
 <template>
   <div>
-    <h1>Salut {{ UserStore.user.email }}</h1>
-    <p>Voilà votre token : {{ UserStore.user.token }}</p>
+    <h1>Bonjour {{ userEmail }}</h1>
+    <p>Vous ne pouvez que supprimer votre compte vu le backend utilisé.</p>
 
     <button class="delete-account" @click="onDeleteAccount">Supprimer votre compte</button>
   </div>
@@ -21,7 +35,9 @@ function onDeleteAccount() {
 
 <style scoped>
 p {
-  margin-top: 3rem;
+  text-align: center;
+  display: block;
+  margin: 8rem auto;
   font-size: 1.5rem;
 }
 .delete-account {
