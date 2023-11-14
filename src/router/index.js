@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import { authGuard } from '../axios/auth-guard';
-import UserPageVue from '../views/admin/UserPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,36 +32,34 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('../views/AdminView.vue'),
-      // children: [
-      //   {
-      //     path: 'user/:id',
-      //     // path: 'user/:id(\\d*)+',
-      //     name: 'user',
-      //     props: true,
-      //     // component: () => import('../views/admin/UserPage.vue')
-      //     component: UserPageVue,
-      //   },
-      // ],
+      children: [  // s'affiche dans le routerview du parent
+        {
+          path: 'user/:id',
+          name: 'user',
+          props: true,
+          component: () => import('../views/admin/UserPage.vue')
+        },
+      ],
     },
+
     {
-      path: '/admin/user/:id',
-      name: 'user',
-      props: true,
-      component: () => import('../views/admin/UserPage.vue')
-    },
-    // {
-    //   path: '/:pathMatch(.*)*',
-    //   name: 'not-found',
-    //   redirect: '/'
-    // }
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      redirect: '/'
+    }
   ]
 });
 
-// router.beforeEach((to, from, next)=> {
-//   if(to.matched[0].name === 'admin'){
-//     authGuard();
-//   }
-//   next();
-// });
+router.beforeEach((to, from, next)=> {
+  if(to.matched[0].name === 'admin'){
+    authGuard();
+  }
+  next();
+});
+
+// router.beforeEach((to, from, next) => {
+//   if (to.name === 'admin' && !isAuthenticated) next({ name: 'Login' })
+//   else next()
+// })
 
 export default router;

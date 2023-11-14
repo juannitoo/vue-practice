@@ -27,6 +27,8 @@ if (userId === undefined ){
       Gérez mon compte
     </RouterLink>
   </p>
+
+  <RouterView></RouterView>
   
     <!-- suspense pbm ... pour le moment -->
     <!-- <p v-for="user in users" :key="user.id">

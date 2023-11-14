@@ -22,11 +22,12 @@ const userEmail = user.email;
 function onDeleteAccount() {
   UserStore.deleteAccount(userId).then(() => router.push({ name: 'home' }));
 }
+
 </script>
 
 <template>
   <div>
-    <h1>Bonjour {{ userEmail }}</h1>
+    <h2>Bonjour {{ userEmail }}</h2>
     <p>Vous ne pouvez que supprimer votre compte vu le backend utilisé.</p>
 
     <button class="delete-account" @click="onDeleteAccount">Supprimer votre compte</button>
@@ -34,7 +35,11 @@ function onDeleteAccount() {
 </template>
 
 <style scoped>
-p {
+h2{
+  text-align: center;
+  font-size: 2rem;
+}
+p{
   text-align: center;
   display: block;
   margin: 8rem auto;
