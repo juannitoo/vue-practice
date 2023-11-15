@@ -39,6 +39,7 @@ ou npm run format
 
 ```
 https://medium.com/@Roli_Dori/deploy-vue-cli-3-project-to-github-pages-ebeda0705fbd
+https://learnvue.co/articles/deploy-vue-to-github-pages
 ```
 
 ### Pense-bête
