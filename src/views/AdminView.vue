@@ -28,8 +28,9 @@ if (userId === undefined ){
     </RouterLink>
   </p>
 
-  <RouterView></RouterView>
-  
+  <suspense>
+    <RouterView></RouterView>
+  </suspense>
     <!-- suspense pbm ... pour le moment -->
     <!-- <p v-for="user in users" :key="user.id">
       <ul>

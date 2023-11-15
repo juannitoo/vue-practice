@@ -57,9 +57,5 @@ router.beforeEach((to, from, next)=> {
   next();
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.name === 'admin' && !isAuthenticated) next({ name: 'Login' })
-//   else next()
-// })
 
 export default router;

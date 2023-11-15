@@ -5,9 +5,11 @@ import { useUserStore } from '../../stores/UserStore.js';
 const UserStore = useUserStore();
 const router = useRouter();
 
+const userEmail = UserStore.user.email;
+
 let userId = UserStore.user.userId
 // refresh
-if (userId === undefined ){
+if (userId === undefined ||  UserStore.user === undefined){
   try {
     UserStore.getUserFromLocalStorage()
     userId = UserStore.user.userId
@@ -15,9 +17,6 @@ if (userId === undefined ){
     UserStore.logout(userId)
   }
 }  
-
-const user = UserStore.user;
-const userEmail = user.email;
 
 function onDeleteAccount() {
   UserStore.deleteAccount(userId).then(() => router.push({ name: 'home' }));

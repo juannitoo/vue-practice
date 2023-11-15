@@ -6,17 +6,17 @@ import Axios from '../../axios/axios-base';
 
 const UserStore = useUserStore();
 
-const email = ref('test2@test.fr');
+const email = ref('test3@test.fr');
 const password = ref('aaaa');
 const password2 = ref('');
 const isMailError = ref(false);
 const isPasswordError = ref(false);
 const isPasswordError2 = ref(false);
-const errors = ref({ error: false, message: [''] });
 const isConnectionTabActive = ref(true);
 const isSubscribtionTabActive = ref(false);
 const disabledValidationButton = ref(true);
 const isMailUsed = ref(false);
+const unknowUser = ref(false);
 
 // on stop un obs que qd on le crée de manière asynchrone
 watch(email, (newValue) => {
@@ -70,6 +70,7 @@ async function activeValidationButton(email) {
 }
 
 function onChooseForm(eventTarget) {
+  this.unknowUser = false;
   if (eventTarget !== undefined) {
     if (eventTarget.id === 'connection') {
       isConnectionTabActive.value = true;
@@ -126,17 +127,23 @@ function arePasswordsEqual(passwords) {
 }
 
 async function connectionFormValidation(email, password, password2) {
+  this.unknowUser = false;
   if (isConnectionTabActive.value) {
     if (validEmail(email) && validPassword(password)) {
-      UserStore.login(email, password).then(() => {
-        // router.push({ name: 'user', params: { id: UserStore.user.userId } });
-        router.push({ name: 'admin' });
+      UserStore.login(email, password).then(
+        (response) => {
+          // console.log("connectionFormValidation", response)
+          router.push({ name: 'admin' });
+        },
+        (reject) => {
+          // console.log("connectionFormValidation reject", reject)
+          this.unknowUser = true;
+        
       });
     }
   } else {
     if (validEmail(email) && validPassword(password) && arePasswordsEqual([password, password2])) {
       UserStore.signup(email, password).then(() => {
-        // router.push({ name: 'user', params: { id: UserStore.user.userId } });
         router.push({ name: 'admin' });
       });
     }
@@ -147,7 +154,9 @@ async function connectionFormValidation(email, password, password2) {
 <template>
   <h3>
     En cours en local, pour l'instant le form fonctionne, les validations aussi, il manque
-    principalement la gestion du token
+    principalement la gestion du token.
+    <br>
+    Vous pouvez vous connecter avec l'email <strong>test@test.fr</strong> et le mot de passe <strong>12345</strong>
   </h3>
   <div>
     <form @submit.prevent="connectionFormValidation(email, password, password2)">
@@ -232,8 +241,8 @@ async function connectionFormValidation(email, password, password2) {
       >
         S'inscrire
       </button>
-      <p class="error-message" v-if="errors.error">
-        Nous n'avons pas pu vous identifier, email ou mot de passe erronés
+      <p class="error-message" v-if="unknowUser">
+        Nous n'avons pas pu vous identifier
       </p>
     </form>
   </div>
@@ -241,9 +250,9 @@ async function connectionFormValidation(email, password, password2) {
 
 <style scoped>
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   display: block;
-  margin: 0 auto;
+  margin: 3rem auto;
   text-align: center;
 }
 form {

@@ -13,8 +13,7 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use( (request) => {
   if (useUserStore().isAuthenticated) {
-    console.log("ajout interceptor JWT")
-    request.headers.Authorization = `Bearer ${useUserStore().getToken()}`
+    request.headers.Authorization = `Bearer ${useUserStore().getToken().replaceAll('"','')}`
   }
   return request  
 });
@@ -22,9 +21,7 @@ Axios.interceptors.request.use( (request) => {
 Axios.interceptors.response.use( (response) => {
   return response 
 }, (error) => {
-  console.log(error)
   if (error.response.status === 401) {
-    console.log("kicked by response interceptor JWT")
     useUserStore().logout()
     router.push('/connexion')
   }
