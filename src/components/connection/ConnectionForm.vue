@@ -6,7 +6,7 @@ import Axios from '../../axios/axios-base';
 
 const UserStore = useUserStore();
 
-const email = ref('test3@test.fr');
+const email = ref('test2@test.fr');
 const password = ref('aaaa');
 const password2 = ref('');
 const isMailError = ref(false);
@@ -153,9 +153,8 @@ async function connectionFormValidation(email, password, password2) {
 
 <template>
   <h3>
-    En cours en local, pour l'instant le form fonctionne, les validations aussi, il manque
-    principalement la gestion du token.
-    <br>
+    En cours en local, le form fonctionne, les validations et l'authentification aussi.
+    <br><br>
     Vous pouvez vous connecter avec l'email <strong>test@test.fr</strong> et le mot de passe <strong>12345</strong>
   </h3>
   <div>

@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from '../stores/UserStore.js';
+import { useRoute } from 'vue-router'
 
 const UserStore = useUserStore();
 
@@ -14,40 +15,50 @@ if (userId === undefined ){
   }
 }  
 
-// await UserStore.getUsers()
-// let users = UserStore.users
+UserStore.getUsers()
 
 </script>
 
 <template>
   <h1>Administration</h1>
   
-  <p>
-    <RouterLink :to="`/admin/user/${userId}`">
-      Gérez mon compte
-    </RouterLink>
-  </p>
-
-  <suspense>
-    <RouterView></RouterView>
-  </suspense>
-    <!-- suspense pbm ... pour le moment -->
-    <!-- <p v-for="user in users" :key="user.id">
-      <ul>
-        <ol>
+  <div v-if="useRoute().fullPath === '/admin'">
+    <h3 class="mon-compte">
+      <RouterLink :to="`/admin/user/${userId}`">
+        Gérez mon compte
+      </RouterLink>
+    </h3>
+    <p>Les users présents dans la base de données :</p>
+    <p>
+      <ol>
+        <li v-for="user in UserStore.users" :key="user.id">
           {{ user.email }}
-        </ol>
-      </ul>
-    </p> -->
+        </li>
+      </ol>
+    </p>
+  </div>
+
+  <div v-else>
+    <RouterView></RouterView>
+  </div>
 
 </template>
 
 <style scoped>
+.mon-compte{
+  font-size: 2.5rem;
+  margin: 9rem auto;
+  text-align: center;
+}
 p {
   text-align: center;
   display: block;
-  margin: 8rem auto;
-  font-size: 1.5rem;
+  margin: 1.5rem auto;
+  font-size: 1.8rem;
+}
+ol{
+  width: 50%;
+  margin: 3rem auto;
 }
 
 </style>
